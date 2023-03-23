@@ -3,16 +3,14 @@ import AppError from "../utils/AppError.js";
 import Work from "../models/workModel.js";
 
 export const addWork = AsyncHandler(async (req, res) => {
-  const { title, image, link, githubLink } = req.body;
-
+  const { title, link, githubLink } = req.body;
   const newWork = await Work.create({
     title,
-    image,
+    image: req.file.path,
     link,
     githubLink,
   });
 
-  console.log(newWork);
   /* const newWork = await pool.query(
     "INSERT INTO works (title, image,link, githubLink) VALUES ($1, $2, $3, $4) RETURNING *",
     [title, image, link, githubLink]
