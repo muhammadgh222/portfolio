@@ -7,8 +7,8 @@ import ErrorHandler from "./utils/ErrorHandler.js";
 import workRoutes from "./routes/workRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import experienceRoutes from "./routes/experienceRoutes.js";
+import adminRoutes from "./routes/authRoutes.js";
 import DB from "./database.js";
-import { validateAdmin } from "./utils/adminValidator.js";
 const app = express();
 
 app.use(express.json());
@@ -24,6 +24,7 @@ DB.sync()
 app.use("/api/v1/works", workRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/experience", experienceRoutes);
+app.use("/api/v1/users", adminRoutes);
 // app.get("/api/v1/me", validateAdmin, (req, res, next) => {
 //   res.send({
 //     message: "Hi",
