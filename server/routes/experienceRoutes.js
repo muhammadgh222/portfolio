@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../controllers/authController.js";
 import {
   addExperience,
   deleteExperience,
@@ -9,11 +10,11 @@ import {
 
 const router = express.Router();
 
-router.route("/").post(addExperience).get(getAllExperiences);
+router.route("/").post(protect, addExperience).get(getAllExperiences);
 router
   .route("/:id")
   .get(getExperience)
-  .patch(updateExperience)
-  .delete(deleteExperience);
+  .patch(protect, updateExperience)
+  .delete(protect, deleteExperience);
 
 export default router;

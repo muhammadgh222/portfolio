@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import ErrorHandler from "./utils/ErrorHandler.js";
 
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use("/images", express.static("./images"));
 // Routes
 DB.sync()

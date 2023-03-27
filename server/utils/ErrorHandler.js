@@ -1,18 +1,12 @@
 import AppError from "./AppError.js";
 
-const handleCastErrorDB = (err) => {
-  const message = `Invalid ${err.path}: ${err.value}.`;
+const handleTypeError = (err) => {
+  const message = `${err.message} for ${err.field}. Please add valid ${err.field}`;
   return new AppError(message, 400);
 };
 const handleNULLErrorDB = (err) => {
-  const message = `${err.column} cannot be NULL.`;
-  return new AppError(message, 400);
-};
+  const message = `Invalid ${err.errors[0].path}: ${err.value}. You need to add ${err.errors[0].path}`;
 
-const handleDuplicateFieldsDB = (err) => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-
-  const message = `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);
 };
 
@@ -62,9 +56,9 @@ export default (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     let error = { ...err };
-
-    if (error.name === "CastError") error = handleCastErrorDB(error);
-    if (error.code === "23502") error = handleNULLErrorDB(error);
+    if (error.name === "MulterError") error = handleTypeError(error);
+    if (error.name === "SequelizeValidationError")
+      error = handleNULLErrorDB(error);
     if (error.name === "ValidationError")
       error = handleValidationErrorDB(error);
     if (error.name === "JsonWebTokenError") error = handleJWTError();

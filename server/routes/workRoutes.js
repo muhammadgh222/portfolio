@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../controllers/authController.js";
 import {
   addWork,
   deleteWork,
@@ -10,7 +11,11 @@ import { uploadImage } from "../utils/imageUpload.js";
 
 const router = express.Router();
 
-router.route("/").post(uploadImage, addWork).get(getAllWorks);
-router.route("/:id").get(getWork).patch(updateWork).delete(deleteWork);
+router.route("/").post(protect, uploadImage, addWork).get(getAllWorks);
+router
+  .route("/:id")
+  .get(getWork)
+  .patch(protect, updateWork)
+  .delete(protect, deleteWork);
 
 export default router;

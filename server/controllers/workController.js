@@ -4,9 +4,10 @@ import Work from "../models/workModel.js";
 
 export const addWork = AsyncHandler(async (req, res) => {
   const { title, link, githubLink } = req.body;
+
   const newWork = await Work.create({
     title,
-    image: req.file.path,
+    image: req.file ? req.file.path : null,
     link,
     githubLink,
   });

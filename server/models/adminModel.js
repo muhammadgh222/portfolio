@@ -25,20 +25,19 @@ const Admin = DB.define(
   },
   {
     timestamps: true,
+    freezeTableName: true,
     hooks: {
       beforeCreate: async function (user) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
       },
     },
-    validate: {
-      validPassword(password) {
-        return bcrypt.compare(password, this.password);
+    instanceMethods: {
+      validPassword: async function (password) {
+        return await bcrypt.compare(password, this.password);
       },
     },
   }
 );
-Admin.prototype.validPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
+
 export default Admin;

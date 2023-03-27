@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../controllers/authController.js";
 import {
   createOrder,
   getAllOrders,
@@ -7,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.route("/").get(getAllOrders).post(createOrder);
+router.route("/").get(protect, getAllOrders).post(createOrder);
 
 router.get("/:id", getOrder);
 
