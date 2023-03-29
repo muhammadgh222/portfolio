@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styles } from "../styles";
-import { navLinks } from "../constants";
+import { navLinks } from "../Dummy";
 import { logo, menu, close } from "../assets";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getAllWorks } from "../actions/workActions";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
+  const dispatch = useDispatch();
+
+  const getWorks = () => {
+    dispatch(getAllWorks());
+  };
   return (
     <nav
       className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20 bg-primary`}
@@ -36,9 +43,13 @@ const Navbar = () => {
                 className={`${
                   active === link.title ? "text-white" : "text-secondary"
                 } hover:text-white text-[18px] font-medium cursor-pointer`}
-                onClick={() => setActive(link.title)}
+                onClick={() => {
+                  setActive(link.title);
+                }}
               >
-                <a href={`#${link.id}`}>{link.title}</a>
+                <a href={`#${link.id}`} onClick={() => dispatch(getAllWorks())}>
+                  {link.title}
+                </a>
               </li>
             );
           })}
