@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
 
 import "react-vertical-timeline-component/style.min.css";
 
@@ -11,6 +12,7 @@ import { styles } from "../styles";
 import { experiences } from "../Dummy";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
+import { getAllExperiences } from "../actions/experienceActions";
 
 const ExperienceCard = ({ experience }) => {
   return (
@@ -20,29 +22,31 @@ const ExperienceCard = ({ experience }) => {
         color: "#fff",
       }}
       contentArrowStyle={{ borderRight: "7px solid  #232631" }}
-      date={experience.date}
-      iconStyle={{ background: experience.iconBg }}
+      date={experience.duration}
+      iconStyle={{ background: experience.companyImg }}
       icon={
         <div className="flex justify-center items-center w-full h-full">
           <img
-            src={experience.icon}
-            alt={experience.company_name}
+            src={experience.companyImg}
+            alt={experience.company}
             className="w-[60%] h-[60%] object-contain"
           />
         </div>
       }
     >
       <div>
-        <h3 className="text-white text-[24px] font-bold">{experience.title}</h3>
+        <h3 className="text-white text-[24px] font-bold">
+          {experience.position}
+        </h3>
         <p
           className="text-secondary text-[16px] font-semibold"
           style={{ margin: 0 }}
         >
-          {experience.company_name}
+          {experience.details}
         </p>
       </div>
 
-      <ul className="mt-5 list-disc ml-5 space-y-2">
+      {/* <ul className="mt-5 list-disc ml-5 space-y-2">
         {experience.points.map((point, index) => (
           <li
             key={`experience-point-${index}`}
@@ -51,13 +55,27 @@ const ExperienceCard = ({ experience }) => {
             {point}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </VerticalTimelineElement>
   );
 };
 
 const Experience = () => {
-  return (
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllExperiences());
+  }, []);
+
+  const { experiences, isLoading } = useSelector((state) => state.experiences);
+
+  console.log(!experiences.experiences && !isLoading);
+  if (!experiences.experiences && !isLoading) {
+    return "No experiences to show";
+  }
+
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <>
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
@@ -70,7 +88,7 @@ const Experience = () => {
 
       <div className="mt-20 flex flex-col">
         <VerticalTimeline>
-          {experiences.map((experience, index) => (
+          {experiences.experiences.map((experience, index) => (
             <ExperienceCard
               key={`experience-${index}`}
               experience={experience}
