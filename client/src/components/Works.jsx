@@ -97,9 +97,12 @@ const Works = () => {
       </div>
 
       <div className="mt-20 flex flex-wrap gap-7">
-        {works.works.map((work, index) => (
-          <ProjectCard key={`project-${index}`} index={index} work={work} />
-        ))}
+        {works.works.map((work, index) => {
+          console.log(work);
+          return (
+            <ProjectCard key={`project-${index}`} index={index} work={work} />
+          );
+        })}
       </div>
     </>
   );

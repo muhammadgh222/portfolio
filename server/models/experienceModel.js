@@ -20,6 +20,10 @@ const Experience = DB.define("Experience", {
   details: {
     type: Sequelize.STRING,
   },
+  companyImg: {
+    type: Sequelize.STRING,
+    defaultValue: "",
+  },
 });
 
 export default Experience;

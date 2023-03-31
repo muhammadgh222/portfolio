@@ -1,6 +1,7 @@
 export const GET_ALL_WORKS = "GET_ALL_WORKS";
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
 export const GET_ALL_EXPERIENCES = "GET_ALL_EXPERIENCES";
+export const CREATE_ORDER = "CREATE_ORDER";
 
 export const START_LOADING = "START_LOADING";
 export const END_LOADING = "END_LOADING";

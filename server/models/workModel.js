@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { ARRAY } from "sequelize";
 
 import DB from "../database.js";
 
@@ -25,6 +25,9 @@ const Work = DB.define("work", {
   githubLink: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  techs: {
+    type: ARRAY(Sequelize.STRING),
   },
 });
 

@@ -67,8 +67,6 @@ const Experience = () => {
   }, []);
 
   const { experiences, isLoading } = useSelector((state) => state.experiences);
-
-  console.log(!experiences.experiences && !isLoading);
   if (!experiences.experiences && !isLoading) {
     return "No experiences to show";
   }

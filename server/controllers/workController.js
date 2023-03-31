@@ -3,13 +3,15 @@ import AppError from "../utils/AppError.js";
 import Work from "../models/workModel.js";
 
 export const addWork = AsyncHandler(async (req, res) => {
-  const { title, link, githubLink } = req.body;
-
+  const { title, link, githubLink, description, techs } = req.body;
   const newWork = await Work.create({
     title,
-    image: req.file ? req.file.path : null,
+    image: req.file ? req.file.originalname : null,
     link,
     githubLink,
+    description,
+
+    techs,
   });
 
   /* const newWork = await pool.query(
@@ -55,6 +57,7 @@ export const updateWork = AsyncHandler(async (req, res, next) => {
   work.description = req.body.description || work.description;
   work.link = req.body.link || work.link;
   work.githubLink = req.body.githubLink || work.githubLink;
+  work.techs = req.body.techs || work.techs;
 
   work.save();
   res.status(200).json({

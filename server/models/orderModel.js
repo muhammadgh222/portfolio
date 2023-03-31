@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 
 import DB from "../database.js";
 
-const Order = DB.define("Order", {
+const Order = DB.define("order", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

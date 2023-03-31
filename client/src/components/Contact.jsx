@@ -1,69 +1,41 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
 import emailjs from "@emailjs/browser";
 
 import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
+import { createOrder } from "../actions/orderActions";
 
 const Contact = () => {
   const formRef = useRef();
-  const [form, setForm] = useState({
+  const dispatch = useDispatch();
+  const [orderData, setOrderData] = useState({
     name: "",
     email: "",
+    phone: "",
     message: "",
   });
 
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { target } = e;
-    const { name, value } = target;
-
-    setForm({
-      ...form,
-      [name]: value,
+  const clear = () => {
+    setOrderData({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
     });
   };
 
-  const handleSubmit = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    emailjs
-      .send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
-        {
-          from_name: form.name,
-          to_name: "JavaScript Mastery",
-          from_email: form.email,
-          to_email: "sujata@jsmastery.pro",
-          message: form.message,
-        },
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
-      )
-      .then(
-        () => {
-          setLoading(false);
-          alert("Thank you. I will get back to you as soon as possible.");
-
-          setForm({
-            name: "",
-            email: "",
-            message: "",
-          });
-        },
-        (error) => {
-          setLoading(false);
-          console.error(error);
-
-          alert("Ahh, something went wrong. Please try again.");
-        }
-      );
+    dispatch(createOrder(orderData));
+    clear();
+    alert(
+      "Your order has been submitted successfully! Expect a call or email form us soon :)"
+    );
   };
-
   return (
     <div
       className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}
@@ -77,7 +49,7 @@ const Contact = () => {
 
         <form
           ref={formRef}
-          onSubmit={handleSubmit}
+          onSubmit={submitHandler}
           className="mt-12 flex flex-col gap-8"
         >
           <label className="flex flex-col">
@@ -85,10 +57,13 @@ const Contact = () => {
             <input
               type="text"
               name="name"
-              value={form.name}
-              onChange={handleChange}
+              value={orderData.name}
+              onChange={(e) => {
+                setOrderData({ ...orderData, name: e.target.value });
+              }}
               placeholder="What's your good name?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              required
             />
           </label>
           <label className="flex flex-col">
@@ -96,10 +71,29 @@ const Contact = () => {
             <input
               type="email"
               name="email"
-              value={form.email}
-              onChange={handleChange}
+              value={orderData.email}
+              onChange={(e) => {
+                setOrderData({ ...orderData, email: e.target.value });
+              }}
               placeholder="What's your web address?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              required
+            />
+          </label>
+          <label className="flex flex-col">
+            <span className="text-white font-medium mb-4">
+              Your Phone number
+            </span>
+            <input
+              type="text"
+              name="text"
+              value={orderData.phone}
+              onChange={(e) => {
+                setOrderData({ ...orderData, phone: e.target.value });
+              }}
+              placeholder="What's your web address?"
+              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              required
             />
           </label>
           <label className="flex flex-col">
@@ -107,10 +101,13 @@ const Contact = () => {
             <textarea
               rows={7}
               name="message"
-              value={form.message}
-              onChange={handleChange}
+              value={orderData.message}
+              onChange={(e) => {
+                setOrderData({ ...orderData, message: e.target.value });
+              }}
               placeholder="What you want to say?"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+              required
             />
           </label>
 
@@ -118,7 +115,7 @@ const Contact = () => {
             type="submit"
             className="bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary"
           >
-            {loading ? "Sending..." : "Send"}
+            Submit
           </button>
         </form>
       </motion.div>

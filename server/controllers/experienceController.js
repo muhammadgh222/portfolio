@@ -3,7 +3,7 @@ import AppError from "../utils/AppError.js";
 import Experience from "../models/experienceModel.js";
 
 export const addExperience = AsyncHandler(async (req, res) => {
-  const { title, duration, company, position, details } = req.body;
+  const { title, duration, company, position, details, companyImg } = req.body;
 
   const newExperience = await Experience.create({
     title,
@@ -11,6 +11,7 @@ export const addExperience = AsyncHandler(async (req, res) => {
     company,
     position,
     details,
+    companyImg,
   });
 
   res.status(201).json({
@@ -47,10 +48,11 @@ export const updateExperience = AsyncHandler(async (req, res, next) => {
     return next(new AppError("There is no such experience", 404));
   }
   experience.title = req.body.title || experience.title;
-  experience.image = req.body.image || experience.image;
-  experience.description = req.body.description || experience.description;
-  experience.link = req.body.link || experience.link;
-  experience.githubLink = req.body.githubLink || experience.githubLink;
+  experience.duration = req.body.duration || experience.duration;
+  experience.company = req.body.company || experience.company;
+  experience.details = req.body.details || experience.details;
+  experience.position = req.body.position || experience.position;
+  experience.companyImg = req.body.companyImg || experience.companyImg;
 
   experience.save();
   res.status(200).json({
