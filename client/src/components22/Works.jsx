@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { styles } from "../styles";
 import { github } from "../assets";
-import { SectionWrapper } from "../hoc";
+import { SectionWrapper } from "../hoc22";
 import { projects } from "../Dummy";
 import { fadeIn, textVariant } from "../utils/motion";
 import { getAllWorks } from "../actions/workActions";

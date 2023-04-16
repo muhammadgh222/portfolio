@@ -1,27 +1,12 @@
 import "./App.scss";
-import { BrowserRouter as Router } from "react-router-dom";
-import {
-  About,
-  Contact,
-  Navbar,
-  Hero,
-  Tech,
-  Works,
-  Experience,
-} from "./components";
+import Header from "./components/Header/Header";
+import Navbar from "./components/Navbar/Navbar";
 
 const App = () => {
   return (
     <div className="app">
-      <Router>
-        <Navbar />
-        <Hero />
-        <About />
-        <Experience />
-        <Tech />
-        <Works />
-        <Contact />
-      </Router>
+      <Navbar />
+      <Header />
     </div>
   );
 };
